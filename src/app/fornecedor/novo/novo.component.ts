@@ -13,7 +13,6 @@ import { MASKS, NgBrazilValidators } from 'ng-brazil';
 import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
 import { Fornecedor } from '../models/fornecedor';
 import { FornecedorService } from '../services/fornecedor.service';
-import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 import { FornecedorViewModel } from '../models/fornecedor.viewmodel';
 
 @Component({

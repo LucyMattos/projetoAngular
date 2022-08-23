@@ -14,8 +14,6 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ErrorInterceptor } from './services/error.handler.service';
 import { ListaComponent } from './produto/lista/lista.component';
 import { EditarComponent } from './produto/editar/editar.component';
-import { TesteComponent } from './teste/teste.component';
-
 
 export const httpInterceptorProviders = [
   {provide: HTTP_INTERCEPTORS , useClass: ErrorInterceptor , multi: true },
@@ -26,18 +24,15 @@ export const httpInterceptorProviders = [
     AppComponent,
     ListaComponent,
     EditarComponent,
-    TesteComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NavegacaoModule,
     NgbModule,
-    FormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
-     HttpClientModule
+    HttpClientModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

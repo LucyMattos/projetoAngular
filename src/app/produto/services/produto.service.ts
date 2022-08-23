@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, catchError, map } from "rxjs";
+import { Observable} from "rxjs";
+import { catchError, map } from "rxjs/operators";
 import { Produto, Fornecedor } from "../models/produto";
 import { BaseService } from "./base.service";
 

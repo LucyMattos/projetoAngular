@@ -5,11 +5,12 @@ import { FormBuilder, FormControl, FormControlName, FormGroup, Validators } from
 import { Observable, fromEvent, merge } from 'rxjs';
 
 import { ToastrService } from 'ngx-toastr';
-import { CustomValidators } from 'ng2-validation';
+// import { CustomValidators } from 'ng2-validation';
 
 import { Usuario } from './../models/usuario';
 import { ContaService } from './../services/conta.service';
 import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
+import { CustomValidators } from 'ngx-custom-validators';
 
 
 @Component({
