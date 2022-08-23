@@ -1,0 +1,40 @@
+<div class="container main-container">
+
+    <h1>Lista de Fornecedores</h1> <br>
+
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Nome</th>
+                <th>Documento</th>
+                <th>Ativo?</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tr *ngFor="let fornecedor of fornecedores">
+            <td style="padding-left: 10px;">
+                {{ fornecedor.nome }}
+            </td>
+            <td style="padding-left: 10px;">
+                {{ fornecedor.tipoFornecedor === 1 ? (fornecedor.documento | cpf) : (fornecedor.documento | cnpj)  }}
+            </td>
+            <td style="padding-left: 10px;">
+                <input [checked]="fornecedor.ativo" class="check-box" disabled="disabled" type="checkbox">
+            </td>
+            <td  style="padding-right: 10px; text-align: right;">
+                <a class="btn btn-info" [routerLink]="['/fornecedores/detalhes',fornecedor.id]">
+                    <span class="bi bi-search"></span>
+                </a>&nbsp;
+                <a class="btn btn-warning" [routerLink]="['/fornecedores/editar',fornecedor.id]">
+                    <span class="bi bi-pencil-fill"></span>
+                </a>&nbsp;
+                <a class="btn btn-danger" [routerLink]="['/fornecedores/excluir',fornecedor.id]">
+                    <span style="color: black;" class="bi bi-trash3-fill"></span>
+                </a>
+            </td>
+        </tr>
+    </table> <br>
+    <p>
+        <a class="btn btn-info" [routerLink]="['/fornecedores/adicionar-novo']">Novo Fornecedor</a>
+    </p>
+</div>
