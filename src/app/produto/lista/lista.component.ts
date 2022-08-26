@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 import { Produto } from '../models/produto';
 import { ProdutoService } from '../services/produto.service';
 
@@ -8,10 +10,13 @@ import { ProdutoService } from '../services/produto.service';
 })
 export class ListaComponent implements OnInit {
 
+  imagens: string = environment.imagensUrl;
+  
   public produtos!: Produto[];
   errorMessage!: string;
 
-  constructor(private produtoService: ProdutoService) { }
+  constructor(private produtoService: ProdutoService,
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.produtoService.obterTodos()

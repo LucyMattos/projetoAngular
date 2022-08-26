@@ -1,7 +1,7 @@
 <div class="container main-container">
     <h1>Cadastro</h1>
 
-    <form novalidate (ngSubmit)="adicionarConta()">
+    <form novalidate [formGroup]="cadastroForm" (ngSubmit)="adicionarConta()">
 
         <h4>Crie sua conta</h4>
         <hr>

@@ -40,19 +40,6 @@ const fornecedorRouterConfig: Routes = [
                 canActivate: [FornecedorGuard],
                 data: [{ claim: { nome: 'Fornecedor', valor: 'Excluir' } }]
             },
-
-
-            // {
-            //     path: '', component: FornecedorAppComponent,
-            //     children: [
-            //         { path: 'listar-todos', component: ListaComponent },
-            //         { path: 'adicionar-novo', component: NovoComponent },
-            //         { path: 'editar/:id', component: EditarComponent },
-            //         { path: 'detalhes/:id', component: DetalhesComponent },
-            //         { path: 'excluir/:id', component: ExcluirComponent }
-            //     ]
-            // }
-
         ]
     }
 ];

@@ -1,8 +1,9 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable, catchError, throwError } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { LocalStorageUtils } from "src/app/utils/localstorage";
+import { catchError } from "rxjs/operators";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

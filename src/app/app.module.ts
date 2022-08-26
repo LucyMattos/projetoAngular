@@ -12,8 +12,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ErrorInterceptor } from './services/error.handler.service';
-import { ListaComponent } from './produto/lista/lista.component';
-import { EditarComponent } from './produto/editar/editar.component';
+import { TextMaskModule } from 'angular2-text-mask';
+
+
 
 export const httpInterceptorProviders = [
   {provide: HTTP_INTERCEPTORS , useClass: ErrorInterceptor , multi: true },
@@ -22,8 +23,8 @@ export const httpInterceptorProviders = [
 @NgModule({
   declarations: [
     AppComponent,
-    ListaComponent,
-    EditarComponent,
+   
+    
   ],
   imports: [
     BrowserModule,
@@ -32,7 +33,8 @@ export const httpInterceptorProviders = [
     NgbModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    TextMaskModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

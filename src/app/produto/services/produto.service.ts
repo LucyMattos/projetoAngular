@@ -1,12 +1,15 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable} from "rxjs";
+import { HttpClient } from "@angular/common/http";
+
+import { Observable } from "rxjs";
 import { catchError, map } from "rxjs/operators";
-import { Produto, Fornecedor } from "../models/produto";
-import { BaseService } from "./base.service";
+
+import { BaseService } from 'src/app/services/base.services';
+import { Produto, Fornecedor } from '../models/produto';
 
 @Injectable()
 export class ProdutoService extends BaseService {
+    UrlServiceV1: string;
 
     constructor(private http: HttpClient) { super() }
 

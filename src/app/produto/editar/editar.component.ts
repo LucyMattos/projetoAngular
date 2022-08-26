@@ -7,6 +7,7 @@ import { Observable, fromEvent, merge } from 'rxjs';
 import { Usuario } from 'src/app/conta/models/usuario';
 import { ContaService } from 'src/app/conta/services/conta.service';
 import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
+import { environment } from 'src/environments/environment';
 import { Produto, Fornecedor } from '../models/produto';
 import { ProdutoService } from '../services/produto.service';
 
@@ -20,7 +21,8 @@ export class EditarComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef })
   formInputElements: ElementRef[] = [];
 
-
+  imagens: string = environment.imagensUrl;
+  
   errors: any[] = [];
   cadastroForm!: FormGroup;
   usuario!: Usuario;

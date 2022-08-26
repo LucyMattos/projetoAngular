@@ -13,4 +13,4 @@ export class FornecedorAppComponent implements OnInit {
   ngOnInit(): void {
     this.router.navigate(['/fornecedores/listar-todos'])
   }
-}
+} 

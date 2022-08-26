@@ -189,7 +189,7 @@ export class NovoComponent implements OnInit {
           falha => { this.processarFalha(falha) }
         );
     }
-  }
+  } 
 
   processarSucesso(response: any) {
     this.fornecedorForm.reset();

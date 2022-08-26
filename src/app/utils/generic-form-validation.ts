@@ -5,7 +5,6 @@ export class GenericValidator {
 
     processarMensagens(container: FormGroup): { [key: string]: string } {
         let messages: { [key: string]: string } = {};
-        //  let messages = {}; O DE CIMA VI NO FORUM E DEU CERTO---> ESTA LINHA É O MODO CORRETO QUE JÁ VEIO FEITO PELO PROF MAS ESTAVA DANDO PROBLEMAS NO TERMINAL; 
         for (let controlKey in container.controls) {
             if (container.controls.hasOwnProperty(controlKey)) {
                 let c = container.controls[controlKey];

@@ -3,12 +3,8 @@
     <h1>Lista de Produtos</h1>
     <hr>
 
-    <p>
-        <a class="btn btn-info" [routerLink]="['/produtos/adicionar-novo']">Novo Produto</a>
-    </p>
-
     <table class="table table-hover">
-        <thead class="thead-dark">
+        <thead class="table-dark">
             <tr>
                 <th>
 
@@ -31,7 +27,7 @@
         <tbody>
             <tr *ngFor="let produto of produtos">
                 <td>
-                    <img src="{{ produto.imagem }}" style="width: 70px; height: 100px">
+                    <img src=" {{ imagens }}{{ produto.imagem }}" style="width: 70px; height: 100px">
                 </td>
                 <td>
                     {{ produto.nome }}
@@ -40,23 +36,27 @@
                     {{ produto.nomeFornecedor }}
                 </td>
                 <td>
-                    {{ produto.valor }}
+                    {{ produto.valor | currencyBrazil }}
                 </td>
                 <td>
                     <input [checked]="produto.ativo" class="check-box" disabled="disabled" type="checkbox">
                 </td>
                 <td class="text-right">
                     <a class="btn btn-warning" [routerLink]="['/produtos/detalhes',produto.id]">
-                        <span class="fa fa-search"></span>
+                        <span class="bi bi-search"></span>
                     </a>&nbsp;
                     <a class="btn btn-info" [routerLink]="['/produtos/editar',produto.id]">
-                        <span class="fa fa-pencil-alt"></span>
+                        <span class="bi bi-pencil-fill"></span>
                     </a>&nbsp;
                     <a class="btn btn-danger" [routerLink]="['/produtos/excluir',produto.id]">
-                        <span class="fa fa-trash"></span>
+                        <span class="bi bi-trash3-fill"></span>
                     </a>
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table> <br>
+    
+    <p>
+        <a class="btn btn-info" [routerLink]="['/produtos/adicionar-novo']">Novo Produto</a>
+    </p>
 </div>
