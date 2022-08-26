@@ -2,16 +2,12 @@ import { Router } from '@angular/router';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 
-import { Observable, fromEvent, merge } from 'rxjs';
-
 import { ToastrService } from 'ngx-toastr';
-// import { CustomValidators } from 'ng2-validation';
 
 import { Usuario } from './../models/usuario';
 import { ContaService } from './../services/conta.service';
-import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
 import { CustomValidators } from 'ngx-custom-validators';
-
+import { FormBaseComponent } from 'src/app/base-components/form-base.component';
 
 @Component({
   selector: 'app-cadastro',
@@ -19,30 +15,20 @@ import { CustomValidators } from 'ngx-custom-validators';
 
 })
 
-export class CadastroComponent implements OnInit, AfterViewInit {
-  [x: string]: any;
+export class CadastroComponent extends FormBaseComponent implements OnInit, AfterViewInit {
 
-  @ViewChildren(FormControlName, { read: ElementRef })
-  formInputElements: ElementRef[] = [];
-
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] = [];
 
   errors: any[] = [];
   cadastroForm!: FormGroup;
   usuario!: Usuario;
-
-  validationMessages!: ValidationMessages;
-  genericValidator!: GenericValidator;
-  displayMessage: DisplayMessage = {};
-
-  mudancasNaoSalvas!: boolean;
-
-
 
   constructor(private fb: FormBuilder,
     private contaService: ContaService,
     private router: Router,
     private toastr: ToastrService,
   ) {
+    super();
 
     this.validationMessages = {
       email: {
@@ -60,8 +46,7 @@ export class CadastroComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.genericValidator = new GenericValidator(this.validationMessages);
-
+    super.configurarMensagensValidacaoBase(this.validationMessages);
   }
 
   ngOnInit(): void {
@@ -78,14 +63,7 @@ export class CadastroComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    let controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.cadastroForm);
-      this.mudancasNaoSalvas = true;
-
-    });
+    super.configurarValidacaoFormularioBase(this.formInputElements, this.cadastroForm);
   }
 
   adicionarConta() {

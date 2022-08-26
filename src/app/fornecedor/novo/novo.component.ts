@@ -51,7 +51,7 @@ export class NovoComponent implements OnInit {
       documento: {
         required: 'Informe o Documento',
         cpf: 'CPF em formato inválido',
-        cpj: 'CNPJ em formato inválido'
+        cnpj: 'CNPJ em formato inválido'
       },
       logradouro: {
         required: 'Informe o Logradouro',

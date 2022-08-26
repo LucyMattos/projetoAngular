@@ -18,6 +18,7 @@ import { ExcluirComponent } from './excluir/excluir.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { FornecedorResolve } from './services/fornecedor.resolve';
 import { FornecedorGuard } from './services/fornecedor.guard';
+import { ListaProdutosComponent } from './produtos/lista-produtos.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { FornecedorGuard } from './services/fornecedor.guard';
     ListaComponent,
     EditarComponent,
     ExcluirComponent,
-    DetalhesComponent
+    DetalhesComponent,
+    ListaProdutosComponent
   ],
   imports: [
     CommonModule,

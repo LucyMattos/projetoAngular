@@ -1,126 +1,120 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
-import { FormControlName, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChildren, ElementRef } from '@angular/core';
+import { FormBuilder, Validators, FormControlName } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomValidators } from 'ngx-custom-validators';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, fromEvent, merge } from 'rxjs';
-import { Usuario } from 'src/app/conta/models/usuario';
-import { ContaService } from 'src/app/conta/services/conta.service';
-import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
-import { environment } from 'src/environments/environment';
-import { Produto, Fornecedor } from '../models/produto';
 import { ProdutoService } from '../services/produto.service';
+import { environment } from 'src/environments/environment';
+import { CurrencyUtils } from 'src/app/utils/currency-utils';
+import { ProdutoBaseComponent } from '../produto-form.base.component';
+
 
 @Component({
   selector: 'app-editar',
   templateUrl: './editar.component.html'
 })
-export class EditarComponent implements OnInit, AfterViewInit {
-  [x: string]: any;
-
-  @ViewChildren(FormControlName, { read: ElementRef })
-  formInputElements: ElementRef[] = [];
+export class EditarComponent extends ProdutoBaseComponent implements OnInit {
 
   imagens: string = environment.imagensUrl;
-  
-  errors: any[] = [];
-  cadastroForm!: FormGroup;
-  usuario!: Usuario;
 
-  validationMessages!: ValidationMessages;
-  genericValidator!: GenericValidator;
-  displayMessage: DisplayMessage = {};
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
-  mudancasNaoSalvas!: boolean;
-
-
+  imageBase64: any;
+  imagemPreview: any;
+  imagemNome: string;
+  imagemOriginalSrc: string;
 
   constructor(private fb: FormBuilder,
-    private contaService: ContaService,
+    private produtoService: ProdutoService,
     private router: Router,
-    private toastr: ToastrService,
-  ) {
+    private route: ActivatedRoute,
+    private toastr: ToastrService) {
 
-    this.validationMessages = {
-      email: {
-        required: 'Informe o e-mail',
-        email: 'Email inválido'
-      },
-      password: {
-        required: 'Informe a senha',
-        rangeLength: 'A senha deve possuir entre 6 e 15 caracteres'
-      },
-      confirmPassword: {
-        required: 'Informe a senha novamente',
-        rangeLength: 'A senha deve possuir entre 6 e 15 caracteres',
-        equalTo: 'As senhas não conferem'
-      }
-    };
-
-    this.genericValidator = new GenericValidator(this.validationMessages);
-
+    super();
+    this.produto = this.route.snapshot.data['produto'];
   }
 
   ngOnInit(): void {
 
-    let senha = new FormControl('', [Validators.required, CustomValidators.rangeLength([6, 15])]);
-    let senhaConfirm = new FormControl('', [Validators.required, CustomValidators.rangeLength([6, 15]), CustomValidators.equalTo(senha)]);
+    this.produtoService.obterFornecedores()
+      .subscribe(
+        fornecedores => this.fornecedores = fornecedores);
 
-    this.cadastroForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: senha,
-      confirmPassword: senhaConfirm
+    this.produtoForm = this.fb.group({
+      fornecedorId: ['', [Validators.required]],
+      nome: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(200)]],
+      descricao: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(1000)]],
+      imagem: [''],
+      valor: ['', [Validators.required]],
+      ativo: [0]
     });
-  }
 
+    this.produtoForm.patchValue({
+      fornecedorId: this.produto.fornecedorId,
+      id: this.produto.id,
+      nome: this.produto.nome,
+      descricao: this.produto.descricao,
+      ativo: this.produto.ativo,
+      valor: CurrencyUtils.DecimalParaString(this.produto.valor)
+    });
+
+    // utilizar o [src] na imagem para evitar que se perca após post
+    this.imagemOriginalSrc = this.imagens + this.produto.imagem;
+  }
 
   ngAfterViewInit(): void {
-    let controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.cadastroForm);
-      this.mudancasNaoSalvas = true;
-
-    });
+    super.configurarValidacaoFormulario(this.formInputElements);
   }
 
-  adicionarConta() {
-    if (this.cadastroForm.dirty && this.cadastroForm.valid) {
-      this.usuario = Object.assign({}, this.usuario, this.cadastroForm.value);
+  editarProduto() {
+    if (this.produtoForm.dirty && this.produtoForm.valid) {
+      this.produto = Object.assign({}, this.produto, this.produtoForm.value);
 
-      this.contaService.registrarUsuario(this.usuario)
+      if (this.imageBase64) {
+        this.produto.imagemUpload = this.imageBase64;
+        this.produto.imagem = this.imagemNome;
+      }
+
+      this.produto.valor = CurrencyUtils.StringParaDecimal(this.produto.valor);
+
+      this.produtoService.atualizarProduto(this.produto)
         .subscribe(
           sucesso => { this.processarSucesso(sucesso) },
           falha => { this.processarFalha(falha) }
         );
-this.mudancasNaoSalvas = false;
-    }
 
+      this.mudancasNaoSalvas = false;
+    }
   }
 
   processarSucesso(response: any) {
-    this.cadastroForm.reset();
+    this.produtoForm.reset();
     this.errors = [];
-    this.contaService.LocalStorage.salvarDadosLocaisUsuario(response);
 
-    let toastr = this.toastr.success('Registro realizado com sucesso', 'Bem vindo !!', {
-      progressBar: true,
-      timeOut: 3000,
-    });
-
-    if (toastr) {
-      toastr.onHidden.subscribe(() => {
-        this.router.navigate(['/home']);
+    let toast = this.toastr.success('Produto editado com sucesso!', 'Sucesso!');
+    if (toast) {
+      toast.onHidden.subscribe(() => {
+        this.router.navigate(['/produtos/listar-todos']);
       });
     }
   }
 
   processarFalha(fail: any) {
     this.errors = fail.error.errors;
-    this.toastr.error('Ocorreu um erro', 'Ops :(');
+    this.toastr.error('Ocorreu um erro!', 'Opa :(');
   }
 
+  upload(file: any) {
+    this.imagemNome = file[0].name;
 
+    var reader = new FileReader();
+    reader.onload = this.manipularReader.bind(this);
+    reader.readAsBinaryString(file[0]);
+  }
+
+  manipularReader(readerEvt: any) {
+    var binaryString = readerEvt.target.result;
+    this.imageBase64 = btoa(binaryString);
+    this.imagemPreview = "data:image/jpeg;base64," + this.imageBase64;
+  }
 }
 
