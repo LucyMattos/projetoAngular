@@ -6,6 +6,7 @@ import { ProdutoService } from '../services/produto.service';
 import { environment } from 'src/environments/environment';
 import { CurrencyUtils } from 'src/app/utils/currency-utils';
 import { ProdutoBaseComponent } from '../produto-form.base.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class EditarComponent extends ProdutoBaseComponent implements OnInit {
     private produtoService: ProdutoService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    public spinner: NgxSpinnerService,) {
 
     super();
     this.produto = this.route.snapshot.data['produto'];
@@ -35,6 +37,8 @@ export class EditarComponent extends ProdutoBaseComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.spinner.show();
+    
     this.produtoService.obterFornecedores()
       .subscribe(
         fornecedores => this.fornecedores = fornecedores);
@@ -59,6 +63,10 @@ export class EditarComponent extends ProdutoBaseComponent implements OnInit {
 
     // utilizar o [src] na imagem para evitar que se perca após post
     this.imagemOriginalSrc = this.imagens + this.produto.imagem;
+
+    setTimeout(() => {
+      this.spinner.hide();
+      }, 1000);
   }
 
   ngAfterViewInit(): void {

@@ -2,19 +2,17 @@ import { Component, OnInit, ViewChildren, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControlName } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Observable, fromEvent, merge } from 'rxjs';
-
 import { ToastrService } from 'ngx-toastr';
 import { MASKS, NgBrazilValidators } from 'ng-brazil';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ValidationMessages, GenericValidator, DisplayMessage } from 'src/app/utils/generic-form-validation';
 import { Fornecedor } from '../models/fornecedor';
 import { CepConsulta, Endereco } from '../models/endereco';
 import { FornecedorService } from '../services/fornecedor.service';
 import { StringUtils } from 'src/app/utils/string-utils';
 import { FormBaseComponent } from 'src/app/base-components/form-base.component';
 import { NgxSpinnerService } from "ngx-spinner";
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -25,6 +23,8 @@ export class EditarComponent extends FormBaseComponent implements OnInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];
 
+  imagens: string = environment.imagensUrl;
+  
   errors: any[] = [];
   errorsEndereco: any[] = [];
   fornecedorForm!: FormGroup;
